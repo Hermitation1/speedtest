@@ -1,0 +1,40 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  checks:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v5
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install dependencies
+        run: uv pip install --system -e ".[dev]"
+
+      - name: Lint
+        run: ruff check .
+
+      - name: Format check
+        run: ruff format --check .
+
+      - name: Type check
+        run: mypy speedtest --ignore-missing-imports
+
+      - name: Security scan
+        run: bandit -r speedtest -q
+
+      - name: Dependency check
+        run: deptry . --optional-dependencies-dev-groups dev
+
+      - name: Tests
+        run: pytest --cov=speedtest --cov-report=term-missing
