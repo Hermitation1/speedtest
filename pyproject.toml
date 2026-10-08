@@ -1,0 +1,31 @@
+[project]
+name = "speedtest"
+version = "0.1.0"
+description = "CLI-утилита замера скорости скачивания по HTTP"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "requests>=2.31",
+    "rich>=13.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=8.0",
+    "pytest-cov>=6.0",
+    "responses>=0.25",
+    "ruff>=0.9",
+    "mypy>=1.10",
+    "bandit>=1.8",
+    "deptry>=0.25",
+    "vulture>=2.13",
+    "interrogate>=1.7",
+    "pip-audit>=2.8",
+]
+
+[project.scripts]
+speedtest = "speedtest.cli:main"
+
+[tool.pytest.ini_options]
+pythonpath = ["."]
+testpaths = ["tests"]
